@@ -21,7 +21,6 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:persistence-pgsql.properties" })
-@ComponentScan({ "lv.datuskola.persistence.model" })
 public class PersistenceJPAConfig {
 
     @Autowired
@@ -31,7 +30,7 @@ public class PersistenceJPAConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final var em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "lv.datuskola.persistence.model" });
+        em.setPackagesToScan("lv.datuskola");
 
         final var vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -69,5 +68,6 @@ public class PersistenceJPAConfig {
         hibernateProperties.setProperty("hibernate.cache.use_second_level_cache", "false");
         return hibernateProperties;
     }
+
 
 }

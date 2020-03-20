@@ -1,5 +1,7 @@
 package lv.datuskola.persistence.model;
 
+import lv.datuskola.file.Place;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

@@ -1,5 +1,7 @@
 package lv.datuskola.persistence.model;
 
+import lv.datuskola.file.Place;
+
 import java.util.List;
 
 public class Places {

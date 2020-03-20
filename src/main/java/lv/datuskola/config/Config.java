@@ -1,13 +1,14 @@
 package lv.datuskola.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+@ComponentScan({ "lv.datuskola" })
+public class Config {
 
     @Bean
     public TaskExecutor threadPoolTaskExecutor() {
@@ -18,5 +19,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         executor.initialize();
         return executor;
     }
-
 }
