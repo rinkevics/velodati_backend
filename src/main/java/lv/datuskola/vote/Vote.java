@@ -1,6 +1,6 @@
-package lv.datuskola.persistence.model;
+package lv.datuskola.vote;
 
-import lv.datuskola.file.Place;
+import lv.datuskola.place.Place;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

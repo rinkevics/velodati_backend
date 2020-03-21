@@ -1,10 +1,12 @@
 package lv.datuskola.file;
 
+import lv.datuskola.place.Place;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +34,7 @@ public class FileController {
     @Autowired
     private ApplicationEventMulticaster applicationEventMulticaster;
 
-    @PostMapping(value="/upload", produces = "application/json")
+    @PostMapping(value="/upload", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public String handleFileUpload(
             @RequestParam("uploadimage") MultipartFile uploadImage,

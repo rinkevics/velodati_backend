@@ -1,6 +1,4 @@
-package lv.datuskola.persistence.model;
-
-import lv.datuskola.file.Place;
+package lv.datuskola.place;
 
 import java.util.List;
 

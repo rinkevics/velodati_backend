@@ -1,4 +1,4 @@
-package lv.datuskola.file;
+package lv.datuskola.place;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
