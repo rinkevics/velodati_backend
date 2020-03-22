@@ -1,5 +1,6 @@
 package lv.datuskola.config;
 
+import lv.datuskola.MainApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +45,7 @@ public class PersistenceJPAConfig {
         dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
         dataSource.setUrl(env.getProperty("jdbc.url"));
         dataSource.setUsername(env.getProperty("jdbc.user"));
-        dataSource.setPassword(env.getProperty("jdbc.pass"));
+        dataSource.setPassword(MainApp.decryptedProperties.getProperty("db"));
         return dataSource;
     }
 

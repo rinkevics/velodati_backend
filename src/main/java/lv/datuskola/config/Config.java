@@ -1,8 +1,12 @@
 package lv.datuskola.config;
 
+import lv.datuskola.MainApp;
+import lv.datuskola.auth.PropertyProvider;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -19,4 +23,13 @@ public class Config {
         executor.initialize();
         return executor;
     }
+
+    @Bean
+    @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public PropertyProvider getPropertyProvider() {
+        var propertyProvider = new PropertyProvider();
+        propertyProvider.setProperties(MainApp.decryptedProperties);
+        return propertyProvider;
+    }
+
 }
