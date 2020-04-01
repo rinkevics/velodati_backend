@@ -113,7 +113,7 @@ public class VoteController {
             return "blank";
         }
 
-        Query query = entityManager.createQuery("SELECT v.id FROM Vote v WHERE v.userHash = :fbUser");
+        Query query = entityManager.createQuery("SELECT v.place.id FROM Vote v WHERE v.userHash = :fbUser");
         query.setParameter("fbUser", userId);
 
         List<Integer> results = query.getResultList();
