@@ -86,9 +86,7 @@ public class VoteController {
                 .createQuery("SELECT v.place.id, count(v) FROM Vote v WHERE v.place.placeType = :type GROUP BY v.place.id ORDER BY count(v) DESC")
                 .setParameter("type", type)
                 .getResultList();
-        if(!list.isEmpty()) {
-            top.add(list.subList(0, Math.min(list.size(), 3)));
-        }
+        top.add(list.subList(0, Math.min(list.size(), 3)));
     }
 
     private Long getVoteCount(Place place) {
