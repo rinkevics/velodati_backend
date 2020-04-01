@@ -18,9 +18,9 @@ public class Secrets {
 
     public static String SALT = "yrvEWaLe";
 
-    public static Properties readAndDecrypt(String password) throws IOException, GeneralSecurityException {
+    public static Properties readAndDecrypt(String secretsFile, String password) throws IOException, GeneralSecurityException {
         var key = getSecretKey(password);
-        var decryptedProperties = getProperties(key);
+        var decryptedProperties = getProperties(secretsFile, key);
         return decryptedProperties;
     }
 
@@ -32,10 +32,10 @@ public class Secrets {
                 salt, iterationCount, keyLength);
     }
 
-    private static Properties getProperties(SecretKeySpec key) throws IOException, GeneralSecurityException {
+    private static Properties getProperties(String secretsFile, SecretKeySpec key) throws IOException, GeneralSecurityException {
         var decryptedProperties = new Properties();
         var prop = new Properties();
-        InputStream is = new FileInputStream(new File("C:\\work\\secrets.properties"));
+        InputStream is = new FileInputStream(new File(secretsFile));
         prop.load(is);
 
         for(var propertyName : prop.keySet()) {
