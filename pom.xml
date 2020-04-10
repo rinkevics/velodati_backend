@@ -97,7 +97,12 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.5.RELEASE</version>
+                <version>2.2.5.RELEASE</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <secrets-file>C:\work\secrets.properties</secrets-file>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
         </plugins>
     </build>
