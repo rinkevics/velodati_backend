@@ -46,7 +46,7 @@ public class FileController {
     @Transactional
     public String handleFileUpload(
             @RequestParam("uploadimage") MultipartFile uploadImage,
-            @RequestParam("type") @Min(1) @Max(2) Integer type,
+            @RequestParam("type") @Min(1) @Max(3) Integer type,
             @RequestParam("lat") @NotBlank String lat,
             @RequestParam("lon") @NotBlank String lon,
             @RequestParam("description") @NotBlank String description,
