@@ -27,6 +27,12 @@ public class PlaceController {
                 ", \"votes\": " + placeVotes() + "}";
     }
 
+    @GetMapping(value="/data")
+    @Transactional
+    public String data() {
+        return "data";
+    }
+
     private String places() throws JsonProcessingException {
         List<Place> places = getPlaces();
 
