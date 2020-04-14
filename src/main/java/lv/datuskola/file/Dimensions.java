@@ -1,18 +1,15 @@
 package lv.datuskola.file;
 
-import com.drew.metadata.Metadata;
-import com.drew.metadata.MetadataException;
-import com.drew.metadata.jpeg.JpegDirectory;
+import java.awt.image.BufferedImage;
 
 class Dimensions {
     int scaledWidth;
     int scaledHeight;
     double scale;
 
-    public Dimensions(Metadata metadata) throws MetadataException {
-        var properties = metadata.getFirstDirectoryOfType(JpegDirectory.class);
-        int width = properties.getImageWidth();
-        int height = properties.getImageHeight();
+    public Dimensions(BufferedImage bufferedImage) {
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
 
         if (height > width) {
             scale = (float) 500 / (float) width;

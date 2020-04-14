@@ -26,6 +26,10 @@ public class ImageTransformer implements Runnable {
     private Path outFile;
     private Path squareFile;
 
+    public static final  String PNG = "png";
+    public static final String JPG = "jpg";
+    public static final String JPEG = "jpeg";
+
     public void init(Path inputFile, Path outFile, Path squareFile) {
         this.inputFile = inputFile;
         this.outFile = outFile;
@@ -42,19 +46,43 @@ public class ImageTransformer implements Runnable {
     }
 
     private void transformImage(Path inputFile, Path outFile, Path squareFile) throws ImageProcessingException, IOException, MetadataException {
+        var fileExtension = getFileExtension(inputFile);
+        if ( !(PNG.equals(fileExtension)
+                || JPG.equals(fileExtension)
+                || JPEG.equals(fileExtension))) {
+            logger.error("Unsupported file type for file "+ inputFile.toString());
+            return;
+        }
+
         BufferedImage destinationImage = transform(inputFile);
-        ImageIO.write(destinationImage, "jpg", outFile.toFile());
+        ImageIO.write(destinationImage, fileExtension, outFile.toFile());
         BufferedImage croppedImage = cropRectangle(destinationImage);
-        ImageIO.write(croppedImage, "jpg", squareFile.toFile());
+        ImageIO.write(croppedImage, fileExtension, squareFile.toFile());
         inputFile.toFile().delete();
     }
 
-    private BufferedImage transform(Path inputFile) throws ImageProcessingException, IOException, MetadataException {
-        Metadata metadata = ImageMetadataReader.readMetadata(inputFile.toFile());
-        int orientation = getOrientation(metadata);
+    private String getFileExtension(Path inputFile) {
+        var fileName = inputFile.getFileName().toString();
+        var fileExtensionStart = fileName.lastIndexOf(".");
+        if(fileExtensionStart < 0) {
+            return "";
+        }
+        fileExtensionStart += 1;
+        var fileExtension = fileName.substring(fileExtensionStart);
+        return fileExtension;
+    }
 
-        var dimensions = new Dimensions(metadata);
 
+    private BufferedImage transform(Path inputFile) throws ImageProcessingException, IOException {
+        BufferedImage originalImage = ImageIO.read(inputFile.toFile());
+
+        var fileExtension = getFileExtension(inputFile);
+        int orientation = 1;
+        if(JPG.equals(fileExtension) || JPEG.equals(fileExtension)) {
+            Metadata metadata = ImageMetadataReader.readMetadata(inputFile.toFile());
+            orientation = getOrientation(metadata);
+        }
+        var dimensions = new Dimensions(originalImage);
         int destinationWidth;
         int destinationHeight;
 
@@ -95,7 +123,6 @@ public class ImageTransformer implements Runnable {
         }
 
         AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
-        BufferedImage originalImage = ImageIO.read(inputFile.toFile());
         BufferedImage destinationImage = new BufferedImage(destinationWidth, destinationHeight, originalImage.getType());
         affineTransformOp.filter(originalImage, destinationImage);
         return destinationImage;
