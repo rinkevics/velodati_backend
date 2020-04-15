@@ -40,13 +40,14 @@ public class ImageTransformer implements Runnable {
     public void run() {
         try {
             transformImage(inputFile, outFile, squareFile);
-        } catch (ImageProcessingException | IOException | MetadataException e) {
+        } catch (ImageProcessingException | IOException e) {
             logger.warn("Exception while transforming image", e);
         }
     }
 
-    private void transformImage(Path inputFile, Path outFile, Path squareFile) throws ImageProcessingException, IOException, MetadataException {
+    private void transformImage(Path inputFile, Path outFile, Path squareFile) throws ImageProcessingException, IOException {
         var fileExtension = getFileExtension(inputFile);
+        fileExtension = fileExtension.toLowerCase();
         if ( !(PNG.equals(fileExtension)
                 || JPG.equals(fileExtension)
                 || JPEG.equals(fileExtension))) {
