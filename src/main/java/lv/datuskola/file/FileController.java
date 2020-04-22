@@ -1,6 +1,7 @@
 package lv.datuskola.file;
 
 import lv.datuskola.place.Place;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -42,12 +43,15 @@ public class FileController {
             @RequestParam("type") @Min(1) @Max(3) Integer type,
             @RequestParam("lat") @NotBlank String lat,
             @RequestParam("lon") @NotBlank String lon,
-            @RequestParam("description") @NotBlank String description,
+            @RequestParam("description") @Length(min = 1, max = 280) String description,
             @RequestParam("email") @NotBlank String email,
             @RequestParam(value = "subscribe", required = false) boolean subscribe,
             @CookieValue(value = "token", required = false) String token,
-            HttpServletRequest request) throws IOException {
+            HttpServletRequest request) throws Exception {
 
+        if(uploadImage.isEmpty()) {
+            throw new Exception("Must provide image");
+        }
         String newName = storeImage(uploadImage);
 
         var place = new Place(type, lat, lon, newName, description, LocalDateTime.now(), token,
