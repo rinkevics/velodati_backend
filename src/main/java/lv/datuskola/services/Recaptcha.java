@@ -1,5 +1,7 @@
-package lv.datuskola;
+package lv.datuskola.services;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -7,15 +9,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-public class MainRecaptcha {
+public class Recaptcha {
 
-    public static void main(String[] args) throws IOException {
-//        PropertyProvider propertyProvider = new PropertyProvider(prop);
-    }
-
-    public static void main2 (String []args) throws IOException{
+    public static boolean isGoodCaptcha(String captcha) throws IOException{
         URL url = new URL ("https://www.google.com/recaptcha/api/siteverify");
 
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -23,7 +20,7 @@ public class MainRecaptcha {
         con.setDoOutput(true);
 
         try(OutputStream os = con.getOutputStream()){
-            var input = fun2().getBytes(StandardCharsets.UTF_8);
+            var input = fun2(captcha).getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
 
@@ -37,13 +34,28 @@ public class MainRecaptcha {
                 response.append(responseLine.trim());
             }
             System.out.println(response.toString());
+
+            JsonObject jsonObject = getGraphData(response.toString());
+
+            if(jsonObject.getBoolean("success") &&
+                    jsonObject.getJsonNumber("score").doubleValue() > 0.7) {
+                return true;
+            }
         }
+        return false;
     }
 
-    private static String fun2() {
+    private static JsonObject getGraphData(String fbGraph) {
+        var jsonReader = Json.createReader(new StringReader(fbGraph));
+        var object = jsonReader.readObject();
+        jsonReader.close();
+        return object;
+    }
+
+    private static String fun2(String captcha) {
         var params = new ArrayList<NameValuePair>();
         params.add(new NameValuePair("secret", "6LdfLOEUAAAAAIkIm28RG8oa9pq7r3iSVyWll4ua"));
-        params.add(new NameValuePair("response", "03AERD8Xrl-dxib4e1OgtOX0reS3R1TE_we1l8k09eM83MIvFphsg2B-uEidF385qjQZjltEG2vfgrObAsixXPkWduDeg544Uzerko-jyJ5Atdvrplg-iAeN2MoRGryaCaL5MRFKDYlDEjsOMYhD9L-DOSGTvRBn6MwtGdm8CK06T_EfSkxTSmYnCia2vR1dcsmi3yGCFM73zKUWmxjctuI2UjkkstT9-ftCZUqKOdkEBn4Alaxsdas_v0Gpvopo6PERe625Sfp_peWWPgAovKnHWo-ilLhE7SvXoyR7AwMdT2M_HcpOI7IfXMubYoxW3lDyjih7j0_IyebqqVuzhjw5UnSl2K5-7vy5rz-_6UD2pe6PDyQ1pDQswcjWwIlOBfVDHnM1ses9E3"));
+        params.add(new NameValuePair("response", captcha));
         return getQuery(params);
     }
 

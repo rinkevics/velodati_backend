@@ -1,6 +1,7 @@
 package lv.datuskola.file;
 
 import lv.datuskola.place.Place;
+import lv.datuskola.services.Recaptcha;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -40,14 +41,19 @@ public class FileController {
     @Transactional
     public String handleFileUpload(
             @RequestParam("uploadimage") MultipartFile uploadImage,
-            @RequestParam("type") @Min(1) @Max(3) Integer type,
+            @RequestParam("type") @Min(1) @Max(4) Integer type,
             @RequestParam("lat") @NotBlank String lat,
             @RequestParam("lon") @NotBlank String lon,
             @RequestParam("description") @Length(min = 1, max = 280) String description,
             @RequestParam("email") @NotBlank String email,
             @RequestParam(value = "subscribe", required = false) boolean subscribe,
             @CookieValue(value = "token", required = false) String token,
+            @RequestHeader(value = "x-captcha") String captcha,
             HttpServletRequest request) throws Exception {
+
+        if(!Recaptcha.isGoodCaptcha(captcha)) {
+            return "blank";
+        }
 
         if(uploadImage.isEmpty()) {
             throw new Exception("Must provide image");

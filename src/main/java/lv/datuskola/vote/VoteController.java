@@ -2,6 +2,7 @@ package lv.datuskola.vote;
 
 import lv.datuskola.place.Place;
 import lv.datuskola.services.FacebookService;
+import lv.datuskola.services.Recaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,16 @@ public class VoteController {
     @PostMapping(value="/vote", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     @ResponseBody
-    public String vote(@RequestParam("place") int placeID, @RequestParam("isUpvote") boolean doUpvote, @CookieValue("token") String token) {
+    public String vote(
+            @RequestParam("place") int placeID,
+            @RequestParam("isUpvote") boolean doUpvote,
+            @CookieValue("token") String token,
+            @RequestHeader(value = "x-captcha") String captcha
+            ) throws IOException {
+
+        if(!Recaptcha.isGoodCaptcha(captcha)) {
+            return "blank";
+        }
 
         String userId = service.isValid(token);
         if(userId == null) {
@@ -78,6 +89,7 @@ public class VoteController {
         getResult(result, 1);
         getResult(result, 2);
         getResult(result, 3);
+        getResult(result, 4);
         return result;
     }
 

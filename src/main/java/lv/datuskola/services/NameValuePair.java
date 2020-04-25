@@ -1,4 +1,4 @@
-package lv.datuskola;
+package lv.datuskola.services;
 
 public class NameValuePair {
     String name;
