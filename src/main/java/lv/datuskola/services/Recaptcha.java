@@ -25,7 +25,9 @@ public class Recaptcha {
         }
 
         int code = con.getResponseCode();
-        System.out.println(code);
+        if(code != 200) {
+            return false;
+        }
 
         try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))){
             StringBuilder response = new StringBuilder();
@@ -33,7 +35,6 @@ public class Recaptcha {
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
-            System.out.println(response.toString());
 
             JsonObject jsonObject = getGraphData(response.toString());
 
