@@ -135,7 +135,7 @@ public class ImageTransformer implements Runnable {
 
         int orientation = 1;
         try {
-            if(propertiesExif != null) {
+            if(propertiesExif != null && propertiesExif.containsTag(ExifIFD0Directory.TAG_ORIENTATION)) {
                 orientation = propertiesExif.getInt(ExifIFD0Directory.TAG_ORIENTATION);
             }
         } catch (Exception ex) {
