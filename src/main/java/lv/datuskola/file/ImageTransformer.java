@@ -90,11 +90,8 @@ public class ImageTransformer implements Runnable {
         var affineTransform = new AffineTransform();
         switch(orientation) {
             case 1:
-                // do not rotate
-                destinationWidth = dimensions.scaledWidth;
-                destinationHeight = dimensions.scaledHeight;
-                affineTransform.scale(dimensions.scale, dimensions.scale);
-                break;
+                // do not rotate, this is handled in default case
+
             case 6:
                 // rotate 90 clockwise
                 destinationWidth = dimensions.scaledHeight;
@@ -119,8 +116,14 @@ public class ImageTransformer implements Runnable {
                 affineTransform.rotate(Math.PI);
                 affineTransform.scale(dimensions.scale, dimensions.scale);
                 break;
+
             default:
-                throw new RuntimeException("Unknown orientation for image " + inputFile.toAbsolutePath().toString());
+                // do not rotate
+                destinationWidth = dimensions.scaledWidth;
+                destinationHeight = dimensions.scaledHeight;
+                affineTransform.scale(dimensions.scale, dimensions.scale);
+                break;
+
         }
 
         AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);

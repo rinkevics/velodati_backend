@@ -6,7 +6,10 @@
 </head>
 <body onload="init()">
 
-<div id="`table" style="overflow-y: scroll; height:600px;">
+
+<h1>Welcome to ${test} </h1>
+
+<!-- div id="table" style="overflow-y: scroll; height:600px;">
     <table id="dataTable" >
         <thead>
         <tr>
@@ -26,7 +29,7 @@
         </tr>
         </tbody>
     </table>
-</div>
+</div-->
 
 <script>
 

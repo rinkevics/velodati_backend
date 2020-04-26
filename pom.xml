@@ -84,21 +84,18 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.2.5.RELEASE</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <secrets-file>C:\work\secrets.properties</secrets-file>
-                    </systemPropertyVariables>
-                </configuration>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>lv.datuskola.MainApp</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>

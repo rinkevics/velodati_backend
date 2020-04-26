@@ -19,6 +19,8 @@ public class AdminController {
     public String admin(Model model) {
 //        List<Place> places = getPlaces();
 //        model.addAttribute("places", places);
+
+        model.addAttribute("test", "1234");
         return "admin";
     }
 }
