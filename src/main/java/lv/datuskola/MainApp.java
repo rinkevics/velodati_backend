@@ -23,6 +23,12 @@ public class MainApp {
 
    public static void main(String[] args) throws IOException, GeneralSecurityException {
 
+      Scanner scan = new Scanner(System.in);
+      String password = scan.next();
+
+      System.out.println(password);
+
+      /*
       MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
       System.out.println("max " + memoryBean.getHeapMemoryUsage().getMax());
       System.out.println("init "+ memoryBean.getHeapMemoryUsage().getInit());
@@ -57,6 +63,8 @@ public class MainApp {
               .sources(MainApp.class)
               .properties(getProperties())
               .run(args);
+
+       */
    }
 
    private static Map<String, Object> getProperties() {
