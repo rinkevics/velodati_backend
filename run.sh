@@ -3,7 +3,4 @@
 read -s mySecret
 export mySecret
 
-#nohup java -jar -Xms64m -Xmx128m "target\velodati-1.0-SNAPSHOT.jar" secrets-file="C:\work\secrets.properties" password="$a" > out.txt &
-
-printenv mySecret | nohup java -jar -Xms64m -Xmx128m "target\velodati-1.0-SNAPSHOT.jar" secrets-file="C:\work\secrets.properties"
-
+nohup java -jar -Xms128m -Xmx1024m "target/velodati-1.0-SNAPSHOT.jar" secrets-file="/home/velo/velodati_backend/secrets.properties" pass="$(printenv mySecret)"

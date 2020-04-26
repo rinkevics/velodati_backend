@@ -9,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 
+import java.io.Console;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
@@ -21,10 +22,6 @@ public class MainApp {
    public static Properties decryptedProperties;
 
    public static void main(String[] args) throws IOException, GeneralSecurityException {
-
-      Scanner scan = new Scanner(System.in);
-      String password = scan.next();
-      System.out.println("password " + password);
 
       MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
       System.out.println("max " + memoryBean.getHeapMemoryUsage().getMax());
@@ -39,11 +36,10 @@ public class MainApp {
          argMap.put(name, value);
 
          System.out.println(name + " " + value);
-
       }
 
       String secretsFile = argMap.get("secrets-file");
-      //String password = argMap.get("password");
+      String password = argMap.get("password");
       System.out.println("secrets "+ secretsFile);
       System.out.println("password " + password);
 
@@ -56,7 +52,7 @@ public class MainApp {
          MemoryWarningSystem.setPercentageUsageThreshold(0.8);
       });
 
-
+/*
 
       loadSecrets(argMap.get("secrets-file"), argMap.get("password"));
 
@@ -66,7 +62,7 @@ public class MainApp {
               .properties(getProperties())
               .run(args);
 
-
+*/
    }
 
    private static Map<String, Object> getProperties() {
