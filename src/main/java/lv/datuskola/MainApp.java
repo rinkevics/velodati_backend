@@ -52,17 +52,11 @@ public class MainApp {
          MemoryWarningSystem.setPercentageUsageThreshold(0.8);
       });
 
-/*
-
       loadSecrets(argMap.get("secrets-file"), argMap.get("password"));
-
-
       new SpringApplicationBuilder()
               .sources(MainApp.class)
               .properties(getProperties())
               .run(args);
-
-*/
    }
 
    private static Map<String, Object> getProperties() {
