@@ -26,9 +26,6 @@ public class MainApp {
       Scanner scan = new Scanner(System.in);
       String password = scan.next();
 
-      System.out.println(password);
-
-      /*
       MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
       System.out.println("max " + memoryBean.getHeapMemoryUsage().getMax());
       System.out.println("init "+ memoryBean.getHeapMemoryUsage().getInit());
@@ -45,7 +42,7 @@ public class MainApp {
       }
 
       String secretsFile = argMap.get("secrets-file");
-      String password = argMap.get("password");
+      //String password = argMap.get("password");
       System.out.println("secrets "+ secretsFile);
       System.out.println("password " + password);
 
@@ -58,13 +55,12 @@ public class MainApp {
          MemoryWarningSystem.setPercentageUsageThreshold(0.8);
       });
 
-      loadSecrets(argMap.get("secrets-file"), argMap.get("password"));
+      loadSecrets(argMap.get("secrets-file"), password);
       new SpringApplicationBuilder()
               .sources(MainApp.class)
               .properties(getProperties())
               .run(args);
 
-       */
    }
 
    private static Map<String, Object> getProperties() {
