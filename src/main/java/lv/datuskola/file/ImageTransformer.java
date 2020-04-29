@@ -89,8 +89,6 @@ public class ImageTransformer implements Runnable {
 
         var affineTransform = new AffineTransform();
         switch(orientation) {
-            case 1:
-                // do not rotate, this is handled in default case
 
             case 6:
                 // rotate 90 clockwise
@@ -117,6 +115,7 @@ public class ImageTransformer implements Runnable {
                 affineTransform.scale(dimensions.scale, dimensions.scale);
                 break;
 
+            case 1:
             default:
                 // do not rotate
                 destinationWidth = dimensions.scaledWidth;
