@@ -14,16 +14,25 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class FacebookService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public static final String FB_APP_ID = "273875460184611";
 
+    private Map<String, String> validTokens = new HashMap<>();
+
     @Autowired
     public PropertyProvider propertyProvider;
 
     public String isValid(String token) {
+        String userId = validTokens.get(token);
+        if (userId != null) {
+            return userId;
+        }
+
         var fb = new FacebookService();
         var accessTokenURL = fb.accessTokenURL(propertyProvider.get("facebook"));
         JsonObject response = fb.getGraph(accessTokenURL);
@@ -39,6 +48,7 @@ public class FacebookService {
 
         if("true".equals(isValid)) {
             var user_id = jsonObject.get("user_id").toString().replace("\"", "");
+            validTokens.put(token, user_id);
             return user_id;
         } else {
             logger.error("Facebook service "+ jsonObject.get("error").asJsonObject().toString());
