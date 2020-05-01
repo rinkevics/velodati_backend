@@ -28,7 +28,7 @@ public class Config {
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
     public PropertyProvider getPropertyProvider() {
         var propertyProvider = new PropertyProvider();
-        propertyProvider.setProperties(MainApp.decryptedProperties);
+        propertyProvider.setProperties(MainApp.properties);
         return propertyProvider;
     }
 

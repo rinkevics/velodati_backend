@@ -41,7 +41,7 @@ public class PlaceController {
     }
 
     private List<Place> getPlaces() {
-        var query = entityManager.createQuery("SELECT p FROM Place p", Place.class);
+        var query = entityManager.createQuery("SELECT p FROM Place p WHERE p.blocked = FALSE", Place.class);
         return query.getResultList();
     }
 

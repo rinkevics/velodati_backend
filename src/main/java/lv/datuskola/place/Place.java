@@ -53,4 +53,56 @@ public class Place {
         this.adminReviewed = adminReviewed;
         this.blocked = blocked;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getPlaceType() {
+        return placeType;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isReceiveEmails() {
+        return receiveEmails;
+    }
+
+    public boolean isAdminReviewed() {
+        return adminReviewed;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
 }
