@@ -5,6 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-šeit vēl nav dati, bet drīz būs
+Šeit drīzumā tiks pievienoti kartes punkti un balsojuma rezultāti atvērto datu formātā.
 </body>
 </html>
