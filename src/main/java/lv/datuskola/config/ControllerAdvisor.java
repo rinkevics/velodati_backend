@@ -24,22 +24,4 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return "error";
     }
 
-    static public class StringCleaner extends PropertyEditorSupport {
-        @Override
-        public void setAsText(String text) {
-            if (text == null) {
-                setValue(null);
-            } else {
-                String safe = HtmlUtils.htmlEscape(text);
-                setValue(safe);
-            }
-        }
-    }
-
-    @InitBinder
-    public void bindStringCleaner(WebDataBinder webDataBinder) {
-        StringCleaner stringCleaner = new StringCleaner();
-        webDataBinder.registerCustomEditor(String.class, stringCleaner);
-    }
-
 }

@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -42,10 +42,10 @@ public class FileController {
     public String handleFileUpload(
             @RequestParam("uploadimage") MultipartFile uploadImage,
             @RequestParam("type") @Min(1) @Max(4) Integer type,
-            @RequestParam("lat") @NotBlank String lat,
-            @RequestParam("lon") @NotBlank String lon,
-            @RequestParam("description") @Length(min = 1, max = 280) String description,
-            @RequestParam("email") @NotBlank String email,
+            @RequestParam("lat") @Length(min = 1, max = 30) String lat,
+            @RequestParam("lon") @Length(min = 1, max = 30) String lon,
+            @RequestParam("description") @Length(min = 1, max = 282) String description,
+            @RequestParam("email")  @Length(min = 1, max = 200) String email,
             @RequestParam(value = "subscribe", required = false) boolean subscribe,
             @CookieValue(value = "token", required = false) String token,
             @RequestHeader(value = "x-captcha") String captcha,
@@ -54,6 +54,11 @@ public class FileController {
         if(!Recaptcha.isGoodCaptcha(captcha)) {
             return "blank";
         }
+
+        lat = HtmlUtils.htmlEscape(lat);
+        lon = HtmlUtils.htmlEscape(lon);
+        description = HtmlUtils.htmlEscape(description);
+        email = HtmlUtils.htmlEscape(email);
 
         if(uploadImage.isEmpty()) {
             throw new Exception("Must provide image");
