@@ -1,7 +1,10 @@
 package lv.datuskola.place;
 
+import lv.datuskola.vote.Vote;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Place {
@@ -22,6 +25,9 @@ public class Place {
     public boolean receiveEmails;
     public boolean adminReviewed;
     public boolean blocked;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
+    public Set<Vote> votes;
 
     public Place() {
 
@@ -104,5 +110,13 @@ public class Place {
 
     public boolean isBlocked() {
         return blocked;
+    }
+
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
     }
 }
