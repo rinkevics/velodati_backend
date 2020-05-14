@@ -1,5 +1,6 @@
 package lv.datuskola.place;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lv.datuskola.vote.Vote;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Place {
     public boolean adminReviewed;
     public boolean blocked;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
     public Set<Vote> votes;
 
