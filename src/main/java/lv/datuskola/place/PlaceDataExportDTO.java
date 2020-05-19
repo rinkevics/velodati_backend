@@ -1,6 +1,7 @@
 package lv.datuskola.place;
 
-public class PlaceData {
+public class PlaceDataExportDTO {
+    public int id;
     public String img;
     public String description;
     public int placeType;
@@ -8,13 +9,18 @@ public class PlaceData {
     public String lat;
     public String lon;
 
-    public PlaceData(String img, String description, int placeType, long voteCount, String lat, String lon) {
+    public PlaceDataExportDTO(int id, String img, String description, int placeType, long voteCount, String lat, String lon) {
+        this.id = id;
         this.img = img;
         this.description = description;
         this.placeType = placeType;
         this.voteCount = voteCount;
         this.lat = lat;
         this.lon = lon;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getImg() {

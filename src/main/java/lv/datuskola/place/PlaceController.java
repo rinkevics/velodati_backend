@@ -27,7 +27,7 @@ public class PlaceController {
         return "{ \"places\": " + places() + ", \"votes\": " + placeVotes() + "}";
     }
 
-    @GetMapping(value="/data")
+    @GetMapping(value = "/data")
     @Transactional
     public String data() {
         return "data";
@@ -41,27 +41,31 @@ public class PlaceController {
     }
 
     private String places() throws JsonProcessingException {
-        List<PlaceDisplay> places = getPlaces();
+        List<PlaceDTO> places = getPlaces();
         var mapper = new ObjectMapper();
         return mapper.writeValueAsString(places);
     }
 
-    private List<PlaceData> getPlaceData() {
-        var result = entityManager
-                .createQuery(
-                "SELECT new lv.datuskola.place.PlaceData(p.img, p.description, p.placeType, count(vote)) " +
-                        "FROM Place p " +
-                        "LEFT JOIN p.votes as vote " +
-                        "WHERE p.blocked = FALSE " +
-                        "GROUP BY p.img, p.description, p.placeType " +
-                        "ORDER BY count(vote) DESC")
-                .getResultList();
+    private List<PlaceDataExportDTO> getPlaceData() {
+        var result = entityManager.createQuery(
+                        """
+                        SELECT new lv.datuskola.place.PlaceDataExportDTO(p.id, p.img, p.description, p.placeType, count(vote), p.lat, p.lon)
+                        FROM Place p
+                        LEFT JOIN p.votes as vote
+                        WHERE p.blocked = FALSE
+                        GROUP BY p.id, p.img, p.description, p.placeType, p.lat, p.lon
+                        ORDER BY count(vote) DESC
+                        """, PlaceDataExportDTO.class).getResultList();
         return result;
     }
 
-    private List<PlaceDisplay> getPlaces() {
-        var query = entityManager.createQuery("SELECT new lv.datuskola.place.PlaceDisplay(p.id, p.placeType, p.lat, p.lon, p.img, p.description)" +
-                " FROM Place p WHERE p.blocked = FALSE", PlaceDisplay.class);
+    private List<PlaceDTO> getPlaces() {
+        var query = entityManager.createQuery(
+                """
+                        SELECT new lv.datuskola.place.PlaceDTO(p.id, p.placeType, p.lat, p.lon, p.img, p.description)
+                        FROM Place p 
+                        WHERE p.blocked = FALSE
+                        """, PlaceDTO.class);
         return query.getResultList();
     }
 

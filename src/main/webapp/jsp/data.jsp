@@ -9,6 +9,7 @@
 <body>
     <table id="dataTable" style="border:1px solid black;border-collapse:collapse;">
         <tr>
+            <th style="border:1px solid black;"> ID </th>
             <th style="border:1px solid black;"> Attēls </th>
             <th style="border:1px solid black;"> Apraksts </th>
             <th style="border:1px solid black;"> Vietas tips </th>
@@ -34,6 +35,9 @@
 
               <tr style="${style}">
                 <td style="border:1px solid black;">
+                    ${place.id}
+                </td>
+                <td style="border:1px solid black;">
                     <img src="/app/files/2${place.img}" style="width: 300px; height: 300px;" />
                 </td>
                 <td style="border:1px solid black;">
@@ -56,6 +60,7 @@
                             <c:set var="type" value="Cits"/>
                         </c:when>
                     </c:choose>
+                    ${type}
                 </td>
                 <td style="border:1px solid black;"> ${place.voteCount} </td>
                 <td style="border:1px solid black;"> ${place.lat}, ${place.lon} </td>

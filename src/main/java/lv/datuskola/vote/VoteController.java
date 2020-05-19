@@ -95,11 +95,15 @@ public class VoteController {
 
     private void getResult(List top, int type) {
         List list = entityManager
-                .createQuery("SELECT v.place.id, count(v) FROM Vote v " +
-                        "WHERE v.place.placeType = :type " +
-                        "AND LENGTH(v.place.replyFromTownHall) IS NULL " +
-                        "GROUP BY v.place.id " +
-                        "ORDER BY count(v) DESC")
+                .createQuery(
+                        """
+                        SELECT v.place.id, count(v)
+                        FROM Vote v
+                        WHERE v.place.placeType = :type
+                        AND LENGTH(v.place.replyFromTownHall) IS NULL
+                        GROUP BY v.place.id
+                        ORDER BY count(v) DESC
+                        """)
                 .setParameter("type", type)
                 .getResultList();
         top.add(list.subList(0, Math.min(list.size(), 3)));
