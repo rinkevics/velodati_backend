@@ -41,7 +41,7 @@ public class PlaceController {
     }
 
     private String places() throws JsonProcessingException {
-        List<Place> places = getPlaces();
+        List<PlaceDisplay> places = getPlaces();
         var mapper = new ObjectMapper();
         return mapper.writeValueAsString(places);
     }
@@ -59,8 +59,9 @@ public class PlaceController {
         return result;
     }
 
-    private List<Place> getPlaces() {
-        var query = entityManager.createQuery("SELECT p FROM Place p WHERE p.blocked = FALSE", Place.class);
+    private List<PlaceDisplay> getPlaces() {
+        var query = entityManager.createQuery("SELECT new lv.datuskola.place.PlaceDisplay(p.id, p.placeType, p.lat, p.lon, p.img, p.description)" +
+                " FROM Place p WHERE p.blocked = FALSE", PlaceDisplay.class);
         return query.getResultList();
     }
 

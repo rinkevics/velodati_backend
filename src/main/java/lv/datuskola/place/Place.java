@@ -26,6 +26,7 @@ public class Place {
     public boolean receiveEmails;
     public boolean adminReviewed;
     public boolean blocked;
+    public String  replyFromTownHall;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
@@ -120,5 +121,9 @@ public class Place {
 
     public void setVotes(Set<Vote> votes) {
         this.votes = votes;
+    }
+
+    public String getReplyFromTownHall() {
+        return replyFromTownHall;
     }
 }
