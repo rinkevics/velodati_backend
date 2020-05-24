@@ -4,12 +4,12 @@ public class PlaceDataExportDTO {
     public int id;
     public String img;
     public String description;
-    public int placeType;
+    public PlaceType placeType;
     public long voteCount;
     public String lat;
     public String lon;
 
-    public PlaceDataExportDTO(int id, String img, String description, int placeType, long voteCount, String lat, String lon) {
+    public PlaceDataExportDTO(int id, String img, String description, PlaceType placeType, long voteCount, String lat, String lon) {
         this.id = id;
         this.img = img;
         this.description = description;
@@ -31,7 +31,7 @@ public class PlaceDataExportDTO {
         return description;
     }
 
-    public int getPlaceType() {
+    public PlaceType getPlaceType() {
         return placeType;
     }
 

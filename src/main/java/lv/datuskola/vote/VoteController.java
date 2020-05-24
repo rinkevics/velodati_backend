@@ -1,6 +1,7 @@
 package lv.datuskola.vote;
 
 import lv.datuskola.place.Place;
+import lv.datuskola.place.PlaceType;
 import lv.datuskola.services.FacebookService;
 import lv.datuskola.services.Recaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,14 +87,13 @@ public class VoteController {
     @ResponseBody
     public List top() {
         var result = new ArrayList();
-        getResult(result, 1);
-        getResult(result, 2);
-        getResult(result, 3);
-        getResult(result, 4);
+        for(PlaceType placeType : PlaceType.values()) {
+            getResult(result, placeType);
+        }
         return result;
     }
 
-    private void getResult(List top, int type) {
+    private void getResult(List top, PlaceType placeType) {
         List list = entityManager
                 .createQuery(
                         """
@@ -104,7 +104,7 @@ public class VoteController {
                         GROUP BY v.place.id
                         ORDER BY count(v) DESC
                         """)
-                .setParameter("type", type)
+                .setParameter("type", placeType)
                 .getResultList();
         top.add(list.subList(0, Math.min(list.size(), 3)));
     }

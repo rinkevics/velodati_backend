@@ -1,6 +1,7 @@
 package lv.datuskola.file;
 
 import lv.datuskola.place.Place;
+import lv.datuskola.place.PlaceType;
 import lv.datuskola.services.Recaptcha;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class FileController {
     @Transactional
     public String handleFileUpload(
             @RequestParam("uploadimage") MultipartFile uploadImage,
-            @RequestParam("type") @Min(1) @Max(4) Integer type,
+            @RequestParam("type") @Min(0) @Max(3) Integer type,
             @RequestParam("lat") @Length(min = 1, max = 30) String lat,
             @RequestParam("lon") @Length(min = 1, max = 30) String lon,
             @RequestParam("description") @Length(min = 1, max = 282) String description,
@@ -65,7 +66,7 @@ public class FileController {
         }
         String newName = storeImage(uploadImage);
 
-        var place = new Place(type, lat, lon, newName, description, LocalDateTime.now(), token,
+        var place = new Place(PlaceType.values()[type], lat, lon, newName, description, LocalDateTime.now(), token,
                 request.getRemoteAddr(), email, subscribe, false, false);
         entityManager.persist(place);
 

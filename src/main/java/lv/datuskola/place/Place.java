@@ -14,7 +14,9 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     public Integer id;
-    public Integer placeType;
+    @Enumerated
+    @Column(columnDefinition = "smallint")
+    public PlaceType placeType;
     public String lat;
     public String lon;
     public String img;
@@ -37,7 +39,7 @@ public class Place {
     }
 
     public Place(
-            Integer placeType,
+            PlaceType placeType,
             String lat,
             String lon,
             String img,
@@ -67,7 +69,7 @@ public class Place {
         return id;
     }
 
-    public Integer getPlaceType() {
+    public PlaceType getPlaceType() {
         return placeType;
     }
 
