@@ -27,7 +27,7 @@ public class XLSMain {
 
     @Scheduled(fixedRate = 60000)
     public void reportCurrentTime() {
-        xlsWriter.write(getColumns(), prepareData(), FilesStore.IMG_FOLDER + File.separator + "veloslazdi-export.xls");
+        //xlsWriter.write(getColumns(), prepareData(), FilesStore.IMG_FOLDER + File.separator + "veloslazdi-export.xls");
     }
 
     private List<Column> getColumns() {
