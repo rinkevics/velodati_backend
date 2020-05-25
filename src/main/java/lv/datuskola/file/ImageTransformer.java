@@ -3,7 +3,6 @@ package lv.datuskola.file;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class ImageTransformer implements Runnable {
     private Path outFile;
     private Path squareFile;
 
-    public static final  String PNG = "png";
+    public static final String PNG = "png";
     public static final String JPG = "jpg";
     public static final String JPEG = "jpeg";
 
@@ -46,7 +45,8 @@ public class ImageTransformer implements Runnable {
     }
 
     private void transformImage(Path inputFile, Path outFile, Path squareFile) throws ImageProcessingException, IOException {
-        var fileExtension = getFileExtension(inputFile);
+        var fileName = inputFile.getFileName().toString();
+        var fileExtension = getFileExtension(fileName);
         fileExtension = fileExtension.toLowerCase();
         if ( !(PNG.equals(fileExtension)
                 || JPG.equals(fileExtension)
@@ -62,8 +62,7 @@ public class ImageTransformer implements Runnable {
         inputFile.toFile().delete();
     }
 
-    private String getFileExtension(Path inputFile) {
-        var fileName = inputFile.getFileName().toString();
+    public String getFileExtension(String fileName) {
         var fileExtensionStart = fileName.lastIndexOf(".");
         if(fileExtensionStart < 0) {
             return "";
@@ -77,52 +76,49 @@ public class ImageTransformer implements Runnable {
     private BufferedImage transform(Path inputFile) throws ImageProcessingException, IOException {
         BufferedImage originalImage = ImageIO.read(inputFile.toFile());
 
-        var fileExtension = getFileExtension(inputFile);
+        var fileName = inputFile.getFileName().toString();
+        var fileExtension = getFileExtension(fileName);
         int orientation = 1;
         if(JPG.equals(fileExtension) || JPEG.equals(fileExtension)) {
             Metadata metadata = ImageMetadataReader.readMetadata(inputFile.toFile());
             orientation = getOrientation(metadata);
         }
-        var dimensions = new Dimensions(originalImage);
+        var dimensions = Dimensions.build(originalImage, 500);
         int destinationWidth;
         int destinationHeight;
 
         var affineTransform = new AffineTransform();
         switch(orientation) {
-
-            case 6:
+            case 6 -> {
                 // rotate 90 clockwise
-                destinationWidth = dimensions.scaledHeight;
-                destinationHeight = dimensions.scaledWidth;
+                destinationWidth = dimensions.scaledHeight();
+                destinationHeight = dimensions.scaledWidth();
                 affineTransform.translate(destinationWidth, 0);
                 affineTransform.rotate(Math.PI / 2);
-                affineTransform.scale(dimensions.scale, dimensions.scale);
-                break;
-            case 8:
+                affineTransform.scale(dimensions.scale(), dimensions.scale());
+            }
+            case 8 -> {
                 // rotate 90 counter clockwise
-                destinationWidth = dimensions.scaledHeight;
-                destinationHeight = dimensions.scaledWidth;
+                destinationWidth = dimensions.scaledHeight();
+                destinationHeight = dimensions.scaledWidth();
                 affineTransform.translate(0, destinationHeight);
                 affineTransform.rotate(- Math.PI / 2);
-                affineTransform.scale(dimensions.scale, dimensions.scale);
-                break;
-            case 3:
+                affineTransform.scale(dimensions.scale(), dimensions.scale());
+            }
+            case 3 -> {
                 // rotate 180 degrees
-                destinationWidth = dimensions.scaledWidth;
-                destinationHeight = dimensions.scaledHeight;
+                destinationWidth = dimensions.scaledWidth();
+                destinationHeight = dimensions.scaledHeight();
                 affineTransform.translate(destinationWidth, destinationHeight);
                 affineTransform.rotate(Math.PI);
-                affineTransform.scale(dimensions.scale, dimensions.scale);
-                break;
-
-            case 1:
-            default:
+                affineTransform.scale(dimensions.scale(), dimensions.scale());
+            }
+            default -> {
                 // do not rotate
-                destinationWidth = dimensions.scaledWidth;
-                destinationHeight = dimensions.scaledHeight;
-                affineTransform.scale(dimensions.scale, dimensions.scale);
-                break;
-
+                destinationWidth = dimensions.scaledWidth();
+                destinationHeight = dimensions.scaledHeight();
+                affineTransform.scale(dimensions.scale(), dimensions.scale());
+            }
         }
 
         AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);

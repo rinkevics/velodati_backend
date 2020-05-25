@@ -1,9 +1,10 @@
 package lv.datuskola.file;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.task.TaskExecutor;
@@ -15,19 +16,21 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.inject.Provider;
 import java.util.stream.Stream;
 
 @Service
 public class FilesStore {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final String IMG_FOLDER = "/home/kaspars/upload-dir";
-    private final Path rootLocation = Paths.get(IMG_FOLDER);
+    private final       Logger logger       = LoggerFactory.getLogger(this.getClass());
+    public static final String IMG_FOLDER   = "/home/kaspars/upload-dir";
+    private final       Path   rootLocation = Paths.get(IMG_FOLDER);
 
     @Autowired
-    private ApplicationContext applicationContext;
-
-    @Autowired
+    @Qualifier("single")
     private TaskExecutor taskExecutor;
+
+    @Autowired
+    private Provider<ImageTransformer> taskExecutorProvider;
 
     public void store(MultipartFile file, String newName, String extension) throws IOException {
         try {
@@ -40,7 +43,7 @@ public class FilesStore {
 
             Files.copy(file.getInputStream(), tmpFile);
 
-            ImageTransformer imageTransformer = applicationContext.getBean(ImageTransformer.class);
+            ImageTransformer imageTransformer = taskExecutorProvider.get();
             imageTransformer.init(tmpFile, newFile, newFile2);
             taskExecutor.execute(imageTransformer);
         } catch (Exception e) {

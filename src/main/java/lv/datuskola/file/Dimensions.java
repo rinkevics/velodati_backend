@@ -2,22 +2,39 @@ package lv.datuskola.file;
 
 import java.awt.image.BufferedImage;
 
-class Dimensions {
-    int scaledWidth;
-    int scaledHeight;
-    double scale;
+public record Dimensions(double scale, int scaledWidth, int scaledHeight) {
 
-    public Dimensions(BufferedImage bufferedImage) {
+    public static Dimensions build(BufferedImage bufferedImage, int cropDimension) {
         int width = bufferedImage.getWidth();
         int height = bufferedImage.getHeight();
+        double scale = 0;
 
         if (height > width) {
-            scale = (float) 500 / (float) width;
+            scale = (float) cropDimension / (float) width;
         } else {
-            scale = (float) 500 / (float) height;
+            scale = (float) cropDimension / (float) height;
         }
 
-        scaledWidth = (int) (width * scale);
-        scaledHeight = (int) (height * scale);
+        int scaledWidth = (int) (width * scale);
+        int scaledHeight = (int) (height * scale);
+
+        return new Dimensions(scale, scaledWidth, scaledHeight);
+    }
+
+    public static Dimensions build2(BufferedImage bufferedImage, int cropDimension) {
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        double scale = 0;
+
+        if (height > cropDimension) {
+            scale = (float) cropDimension / (float) height;
+        } else {
+            scale = 1;
+        }
+
+        int scaledWidth = (int) (width * scale);
+        int scaledHeight = (int) (height * scale);
+
+        return new Dimensions(scale, scaledWidth, scaledHeight);
     }
 }

@@ -2,6 +2,7 @@ package lv.datuskola.place;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,9 @@ import java.util.List;
 @Controller
 public class PlaceController {
 
+    @Autowired
+    public PlaceService placeService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -24,7 +28,7 @@ public class PlaceController {
     @Transactional
     @ResponseBody
     public String listPlaces() throws JsonProcessingException {
-        return "{ \"places\": " + places() + ", \"votes\": " + placeVotes() + "}";
+        return "{ \"places\": " + placeService.places() + ", \"votes\": " + placeService.placeVotes() + "}";
     }
 
     @GetMapping(value = "/data")
@@ -36,7 +40,7 @@ public class PlaceController {
     @GetMapping(value = "/RZajXyYh")
     @Transactional
     public String data(Model model) {
-        model.addAttribute("places", getPlaceData());
+        model.addAttribute("places", placeService.getPlaceData());
         return "data";
     }
 
