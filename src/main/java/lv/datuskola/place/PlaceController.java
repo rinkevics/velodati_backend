@@ -33,12 +33,6 @@ public class PlaceController {
 
     @GetMapping(value = "/data")
     @Transactional
-    public String data() {
-        return "data";
-    }
-
-    @GetMapping(value = "/RZajXyYh")
-    @Transactional
     public String data(Model model) {
         model.addAttribute("places", placeService.getPlaceData());
         return "data";
