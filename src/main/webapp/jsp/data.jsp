@@ -15,6 +15,8 @@
             <th style="border:1px solid black;"> Vietas tips </th>
             <th style="border:1px solid black;"> Balsu skaits </th>
             <th style="border:1px solid black;"> Atrašanās vieta </th>
+            <th style="border:1px solid black;"> RDSD atbilde </th>
+            <th style="border:1px solid black;"> RDSD atbildes statuss </th>
         </tr>
 
         <c:set var = "dark" value = "0"/>
@@ -45,25 +47,11 @@
                         ${place.description}
                     </div>
                 </td>
-                <td style="border:1px solid black;">
-                    <c:choose>
-                        <c:when test="${place.placeType==1}">
-                            <c:set var="type" value="Šaurība, nepārredzamība"/>
-                        </c:when>
-                        <c:when test="${place.placeType==2}">
-                            <c:set var="type" value="Strauji pagriezieni"/>
-                        </c:when>
-                        <c:when test="${place.placeType==3}">
-                            <c:set var="type" value="Segums (bedres, augstas apmales)"/>
-                        </c:when>
-                        <c:when test="${place.placeType==4}">
-                            <c:set var="type" value="Cits"/>
-                        </c:when>
-                    </c:choose>
-                    ${type}
-                </td>
+                <td style="border:1px solid black;"> ${place.placeType.label} </td>
                 <td style="border:1px solid black;"> ${place.voteCount} </td>
                 <td style="border:1px solid black;"> ${place.lat}, ${place.lon} </td>
+                <td style="border:1px solid black;"> ${place.replyFromTownHall} </td>
+                <td style="border:1px solid black;"> ${place.townHallReplyState.label} </td>
               </tr>
         </c:forEach>
     </table>

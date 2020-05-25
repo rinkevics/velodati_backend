@@ -1,15 +1,26 @@
 package lv.datuskola.place;
 
 public class PlaceDataExportDTO {
-    public int id;
-    public String img;
-    public String description;
-    public PlaceType placeType;
-    public long voteCount;
-    public String lat;
-    public String lon;
+    public int                id;
+    public String             img;
+    public String             description;
+    public PlaceType          placeType;
+    public long               voteCount;
+    public String             lat;
+    public String             lon;
+    public String             replyFromTownHall;
+    public TownHallReplyState townHallReplyState;
 
-    public PlaceDataExportDTO(int id, String img, String description, PlaceType placeType, long voteCount, String lat, String lon) {
+    public PlaceDataExportDTO(
+            int id,
+            String img,
+            String description,
+            PlaceType placeType,
+            long voteCount,
+            String lat,
+            String lon,
+            String replyFromTownHall,
+            TownHallReplyState townHallReplyState) {
         this.id = id;
         this.img = img;
         this.description = description;
@@ -17,6 +28,8 @@ public class PlaceDataExportDTO {
         this.voteCount = voteCount;
         this.lat = lat;
         this.lon = lon;
+        this.replyFromTownHall = replyFromTownHall;
+        this.townHallReplyState = townHallReplyState;
     }
 
     public int getId() {
@@ -45,5 +58,13 @@ public class PlaceDataExportDTO {
 
     public String getLon() {
         return lon;
+    }
+
+    public String getReplyFromTownHall() {
+        return replyFromTownHall;
+    }
+
+    public TownHallReplyState getTownHallReplyState() {
+        return townHallReplyState;
     }
 }

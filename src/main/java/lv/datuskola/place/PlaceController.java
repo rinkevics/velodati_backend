@@ -49,7 +49,7 @@ public class PlaceController {
     private List<PlaceDataExportDTO> getPlaceData() {
         var result = entityManager.createQuery(
                         """
-                        SELECT new lv.datuskola.place.PlaceDataExportDTO(p.id, p.img, p.description, p.placeType, count(vote), p.lat, p.lon)
+                        SELECT new lv.datuskola.place.PlaceDataExportDTO(p.id, p.img, p.description, p.placeType, count(vote), p.lat, p.lon, p.replyFromTownHall, p.townHallReplyState)
                         FROM Place p
                         LEFT JOIN p.votes as vote
                         WHERE p.blocked = FALSE

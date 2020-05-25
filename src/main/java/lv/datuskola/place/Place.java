@@ -14,8 +14,7 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     public Integer id;
-    @Enumerated
-    @Column(columnDefinition = "smallint")
+    @Enumerated(EnumType.ORDINAL)
     public PlaceType placeType;
     public String lat;
     public String lon;
@@ -29,6 +28,8 @@ public class Place {
     public boolean adminReviewed;
     public boolean blocked;
     public String  replyFromTownHall;
+    @Enumerated(EnumType.ORDINAL)
+    public TownHallReplyState townHallReplyState;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "place")
@@ -127,5 +128,9 @@ public class Place {
 
     public String getReplyFromTownHall() {
         return replyFromTownHall;
+    }
+
+    public TownHallReplyState getTownHallReplyState() {
+        return townHallReplyState;
     }
 }

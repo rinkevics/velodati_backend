@@ -16,10 +16,8 @@
 
     <script>
         function myFunction() {
-            //document.getElementById("action").value = "approve";
             document.getElementById("myForm").submit();
         }
-
     </script>
 
 </body>
