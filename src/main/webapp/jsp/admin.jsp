@@ -23,6 +23,9 @@
                 <th style="border:1px solid black;"> Img </th>
                 <th style="border:1px solid black;"> Description </th>
                 <th style="border:1px solid black;"> Place Type </th>
+                <th style="border:1px solid black;"> Lat Lon </th>
+                <th style="border:1px solid black;"> Reply From Town Hall </th>
+                <th style="border:1px solid black;"> Reply From Town Hall State </th>
                 <th style="border:1px solid black;"> Created at </th>
                 <th style="border:1px solid black;"> Ip Address </th>
                 <th style="border:1px solid black;"> Email </th>
@@ -46,19 +49,26 @@
                     </c:otherwise>
                 </c:choose>
 
-                  <tr style="${style}">
-                      <td style="border:1px solid black;"> ${place.id} <input type ="checkbox" name="approve" value="${place.id}"/> </td>
-                      <td style="border:1px solid black;"> <input type ="checkbox" name="block" value="${place.id}"/> </td>
-                      <td style="border:1px solid black;"> <img src="/app/files/2${place.img}" /></td>
-                      <td style="border:1px solid black;"> ${place.description} </td>
-                      <td style="border:1px solid black;"> ${place.placeType} </td>
-                      <td style="border:1px solid black;"> ${place.createdDateTime} </td>
-                      <td style="border:1px solid black;"> ${place.ipAddress} </td>
-                      <td style="border:1px solid black;"> ${place.email} </td>
-                      <td style="border:1px solid black;"> ${place.receiveEmails} </td>
-                      <td style="border:1px solid black;"> ${place.adminReviewed} </td>
-                      <td style="border:1px solid black;"> ${place.blocked} </td>
-                  </tr>
+                <tr style="${style}">
+                    <td style="border:1px solid black;"> ${place.id} <input type ="checkbox" name="approve" value="${place.id}"/> </td>
+                    <td style="border:1px solid black;"> <input type ="checkbox" name="block" value="${place.id}"/> </td>
+                    <td style="border:1px solid black;"> <img src="/app/files/2${place.img}" /></td>
+                    <td style="border:1px solid black;">
+                        <div style="width: 300px; overflow: hidden; text-overflow: ellipsis;">
+                            ${place.description}
+                        </div>
+                    </td>
+                    <td style="border:1px solid black;"> ${place.placeType.label} </td>
+                    <td style="border:1px solid black;"> ${place.lat}, ${place.lon} </td>
+                    <td style="border:1px solid black;"> ${place.replyFromTownHall} </td>
+                    <td style="border:1px solid black;"> ${place.townHallReplyState.label} </td>
+                    <td style="border:1px solid black;"> ${place.createdDateTime} </td>
+                    <td style="border:1px solid black;"> ${place.ipAddress} </td>
+                    <td style="border:1px solid black;"> ${place.email} </td>
+                    <td style="border:1px solid black;"> ${place.receiveEmails} </td>
+                    <td style="border:1px solid black;"> ${place.adminReviewed} </td>
+                    <td style="border:1px solid black;"> ${place.blocked} </td>
+                </tr>
             </c:forEach>
         </table>
 
