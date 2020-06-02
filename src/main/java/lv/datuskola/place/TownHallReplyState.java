@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum TownHallReplyState {
     NONE("Nav"),
     REQUEST_SENT("Pieprasījums nosūtīts"),
-    REPLY_RECEIVED("Atbilde saņemta");
+    REPLY_RECEIVED("Atbilde saņemta"),
+    NOT_APPLICABLE("Neattiecas");
 
     public String label;
 
