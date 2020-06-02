@@ -67,7 +67,7 @@ public class FileController {
         String newName = storeImage(uploadImage);
 
         var place = new Place(PlaceType.values()[type], lat, lon, newName, description, LocalDateTime.now(), token,
-                request.getRemoteAddr(), email, subscribe, false, false);
+                request.getHeader("X-Real-IP"), email, subscribe, false, false);
         entityManager.persist(place);
 
         return "blank";
