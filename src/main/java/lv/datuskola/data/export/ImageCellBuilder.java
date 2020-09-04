@@ -19,15 +19,7 @@ import java.nio.file.Path;
 
 import static lv.datuskola.file.ImageTransformer.*;
 
-class ImageCellData implements CellData {
-
-    private final String fileName;
-    private final String fileType;
-
-    public ImageCellData(String fileName, String fileType) {
-        this.fileName = fileName;
-        this.fileType = fileType;
-    }
+record ImageCellBuilder(String fileName, String fileType) implements CellBuilder {
 
     public void render(SXSSFWorkbook workbook, SXSSFSheet sheet, SXSSFRow columnRow, int rowNum, int colNum) throws Exception {
         Path path = Path.of(fileName);

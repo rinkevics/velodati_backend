@@ -43,30 +43,30 @@ public class XLSMain {
         );
     }
 
-    private List<CellData[]> prepareData() {
-        List<CellData[]> data = new ArrayList<>();
+    private List<CellBuilder[]> prepareData() {
+        List<CellBuilder[]> data = new ArrayList<>();
         for(var place : placeService.getPlaceData()) {
-            data.add(new CellData[] {
-                    new TextCellData(String.valueOf(place.id)),
-                    new TextCellData(place.description),
-                    new TextCellData(place.placeType != null ? place.placeType.label : ""),
-                    new TextCellData(String.valueOf(place.voteCount)),
-                    new TextCellData(place.lat + ", " + place.lon),
-                    new TextCellData(place.townHallReplyState != null ? place.townHallReplyState.label : ""),
-                    new TextCellData(place.replyFromTownHall),
+            data.add(new CellBuilder[] {
+                    new TextCellBuilder(String.valueOf(place.id)),
+                    new TextCellBuilder(place.description),
+                    new TextCellBuilder(place.placeType != null ? place.placeType.label : ""),
+                    new TextCellBuilder(String.valueOf(place.voteCount)),
+                    new TextCellBuilder(place.lat + ", " + place.lon),
+                    new TextCellBuilder(place.townHallReplyState != null ? place.townHallReplyState.label : ""),
+                    new TextCellBuilder(place.replyFromTownHall),
                     getImageCell(place)
             });
         }
         return data;
     }
 
-    private CellData getImageCell(PlaceDataExportDTO place) {
-        CellData imageCellData;
+    private CellBuilder getImageCell(PlaceDataExportDTO place) {
+        CellBuilder imageCellBuilder;
         if(place.img != null && !place.img.isEmpty()) {
-            imageCellData = new ImageCellData(FilesStore.IMG_FOLDER + File.separator + place.img, imageTransformer.getFileExtension(place.img));
+            imageCellBuilder = new ImageCellBuilder(FilesStore.IMG_FOLDER + File.separator + place.img, imageTransformer.getFileExtension(place.img));
         } else {
-            imageCellData = new TextCellData("");
+            imageCellBuilder = new TextCellBuilder("");
         }
-        return imageCellData;
+        return imageCellBuilder;
     }
 }

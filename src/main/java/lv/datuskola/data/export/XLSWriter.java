@@ -1,6 +1,5 @@
 package lv.datuskola.data.export;
 
-import lv.datuskola.file.FilesStore;
 import lv.datuskola.file.ImageTransformer;
 import lv.datuskola.place.PlaceDataExportDTO;
 import org.apache.poi.xssf.streaming.SXSSFCell;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,28 +21,35 @@ class XLSWriter {
     @Autowired
     public ImageTransformer imageTransformer;
 
-    void write(List<Column> columns, Iterator<PlaceDataExportDTO> data, String xlsFile) {
+    void buildXLS(List<Column> columns, Iterator<PlaceDataExportDTO> data, String xlsFile) {
         try {
-            var xls = new File(xlsFile);
-            if(xls.exists()) {
-                xls.delete();
-            }
-            xls.createNewFile();
+            recreateXLSFile(xlsFile);
 
             SXSSFWorkbook workbook = new SXSSFWorkbook(10);
-            writeMainSheet(columns, data, workbook);
+            try {
+                buildMainSheet(columns, data, workbook);
 
-            FileOutputStream outputStream = new FileOutputStream(xlsFile);
-            workbook.write(outputStream);
-            outputStream.close();
-
-            workbook.dispose();
+                try (FileOutputStream outputStream = new FileOutputStream(xlsFile)) {
+                    workbook.write(outputStream);
+                }
+            } finally {
+                workbook.dispose();
+            }
         } catch (Exception e) {
+            //TODO logging
             e.printStackTrace();
         }
     }
 
-    private void writeMainSheet(List<Column> columns, Iterator<PlaceDataExportDTO> data, SXSSFWorkbook workbook) throws Exception {
+    private void recreateXLSFile(String xlsFile) throws IOException {
+        var xls = new File(xlsFile);
+        if(xls.exists()) {
+            xls.delete();
+        }
+        xls.createNewFile();
+    }
+
+    private void buildMainSheet(List<Column> columns, Iterator<PlaceDataExportDTO> data, SXSSFWorkbook workbook) throws Exception {
         SXSSFSheet sheet = workbook.createSheet("Main");
         sheet.createFreezePane(0, 1);
         createHeader(columns, sheet);
@@ -63,32 +70,21 @@ class XLSWriter {
     private void renderTable(SXSSFWorkbook workbook, SXSSFSheet sheet, Iterator<PlaceDataExportDTO> tableData)
             throws Exception {
         int rowNum = 1;
-        PlaceDataExportDTO place;
         while(tableData.hasNext()) {
-            place = tableData.next();
+            PlaceDataExportDTO place = tableData.next();
             var row = sheet.createRow(rowNum);
             row.setHeight((short) 8000);
 
             int colNum = 0;
 
-            new TextCellData(String.valueOf(place.id)).render(workbook, sheet, row, rowNum, colNum++);
-            new TextCellData(place.placeType != null ? place.placeType.label : "").render(workbook, sheet, row, rowNum, colNum++);
-            new TextCellData(String.valueOf(place.voteCount)).render(workbook, sheet, row, rowNum, colNum++);
-            new TextCellData(place.townHallReplyState != null ? place.townHallReplyState.label : "").render(workbook, sheet, row, rowNum, colNum++);
-            getImageCell(place).render(workbook, sheet, row, rowNum, colNum++);
+            RowBuilder rowBuilder = new RowBuilder(imageTransformer, place);
+            for(CellBuilder cellBuilder : rowBuilder.buildRowCells()) {
+                cellBuilder.render(workbook, sheet, row, rowNum, colNum);
+                colNum++;
+            }
 
             rowNum++;
         }
-    }
-
-    private CellData getImageCell(PlaceDataExportDTO place) {
-        CellData imageCellData;
-        if(place.img != null && !place.img.isEmpty()) {
-            imageCellData = new ImageCellData(FilesStore.IMG_FOLDER + File.separator + place.img, imageTransformer.getFileExtension(place.img));
-        } else {
-            imageCellData = new TextCellData("");
-        }
-        return imageCellData;
     }
 
 }
