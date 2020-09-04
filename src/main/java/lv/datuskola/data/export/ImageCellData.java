@@ -5,10 +5,10 @@ import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFShape;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
@@ -29,7 +29,7 @@ class ImageCellData implements CellData {
         this.fileType = fileType;
     }
 
-    public void render(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow columnRow, int rowNum, int colNum) throws Exception {
+    public void render(SXSSFWorkbook workbook, SXSSFSheet sheet, SXSSFRow columnRow, int rowNum, int colNum) throws Exception {
         Path path = Path.of(fileName);
         if(!path.toFile().exists()) {
             return;
@@ -59,11 +59,11 @@ class ImageCellData implements CellData {
         };
     }
 
-    private InputStream getImage(Path path) throws IOException {
+    private byte[] getImage(Path path) throws IOException {
         var destinationImage = scale(500, path);
         var baos = new ByteArrayOutputStream();
         ImageIO.write(destinationImage, fileType, baos);
-        return new ByteArrayInputStream(baos.toByteArray());
+        return baos.toByteArray();
     }
 
     private BufferedImage scale(int cropDimension, Path path) throws IOException {

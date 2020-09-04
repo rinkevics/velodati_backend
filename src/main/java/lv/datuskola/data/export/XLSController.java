@@ -41,7 +41,7 @@ public class XLSController {
         if(adminToken == null || !adminToken.equals(propertyProvider.get("admin"))) {
             return "adminlogin";
         }
-        xlsWriter.write(getColumns(), prepareData(), FilesStore.IMG_FOLDER + File.separator + "veloslazdi-export.xls");
+        xlsWriter.write(getColumns(), placeService.getPlaceData().iterator(), FilesStore.IMG_FOLDER + File.separator + "veloslazdi-export.xls");
         return "redirect:" + propertyProvider.get(SERVER_URL) + "app/admin/new";
     }
 
