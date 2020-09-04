@@ -34,7 +34,7 @@ class XLSWriter {
 
             FileOutputStream outputStream = new FileOutputStream(xlsFile);
             workbook.write(outputStream);
-            workbook.close();
+            outputStream.close();
 
             workbook.dispose();
         } catch (Exception e) {
