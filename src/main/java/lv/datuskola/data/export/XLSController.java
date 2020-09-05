@@ -48,15 +48,16 @@ public class XLSController {
     }
 
     public List<Column> getColumns() {
-        return Arrays.asList(new Column("ID", 6 * 256),
+        return Arrays.asList(
+                new Column("ID", 6 * 256),
                 new Column("Apraksts", 20 * 256),
                 new Column("Vietas tips", 30 * 256),
                 new Column("Balsu skaits", 10 * 256),
                 new Column("Atrašanās vieta", 36 * 256),
                 new Column("RDSD atbildes statuss", 36 * 256),
                 new Column("RDSD atbilde", 36 * 256),
+                new Column("Attēla URL", 255 * 256),
                 new Column("Attēls", 255 * 256));
     }
-
 
 }

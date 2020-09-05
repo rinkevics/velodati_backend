@@ -17,6 +17,7 @@ record RowBuilder(ImageTransformer imageTransformer, PlaceDataExportDTO place) {
                 new TextCellBuilder(place.lat + ", " + place.lon),
                 new TextCellBuilder(place.townHallReplyState != null ? place.townHallReplyState.label : ""),
                 new TextCellBuilder(place.replyFromTownHall),
+                new TextCellBuilder(place.img),
                 buildImageCell(place)};
     }
 
