@@ -8,6 +8,8 @@ import java.io.File;
 
 record RowBuilder(ImageTransformer imageTransformer, PlaceDataExportDTO place) {
 
+    private static String IMAGE_URL = "https://veloslazdi.datuskola.lv/app/files/";
+
     CellBuilder[] buildRowCells() {
         return new CellBuilder[]{
                 new TextCellBuilder(String.valueOf(place.id)),
@@ -17,7 +19,7 @@ record RowBuilder(ImageTransformer imageTransformer, PlaceDataExportDTO place) {
                 new TextCellBuilder(place.lat + ", " + place.lon),
                 new TextCellBuilder(place.townHallReplyState != null ? place.townHallReplyState.label : ""),
                 new TextCellBuilder(place.replyFromTownHall),
-                new TextCellBuilder(place.img),
+                new TextCellBuilder(IMAGE_URL + place.img),
                 buildImageCell(place)};
     }
 
